@@ -147,6 +147,7 @@ public class MainActivity extends Activity implements View.OnClickListener
         {
             String location = editTextPattern.getText().toString();
             String url = "http://api.openweathermap.org/data/2.5/find?q="+location+"&type=accurate&mode=json";
+            editTextTime.setText("");
 
             if(!(location.contains(" ")))
             {

@@ -113,6 +113,7 @@ public class WeatherServiceAsync extends AsyncTask<String, Void, String>
             }
             else
             {
+                this.MainActivity.editTextTime.setText("");
                 Toast.makeText(this.MainActivity.getApplicationContext(), "Kein Treffer!", Toast.LENGTH_SHORT).show();
             }
         }
