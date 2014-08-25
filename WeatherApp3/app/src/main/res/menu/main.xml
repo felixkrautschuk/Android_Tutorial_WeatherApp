@@ -1,4 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity" >
+
+    <item android:id="@+id/action_aktualisieren"
+        android:title="Aktualisieren"
+        android:orderInCategory="100"
+        android:icon="@drawable/update"
+        android:showAsAction="always" />
 </menu>

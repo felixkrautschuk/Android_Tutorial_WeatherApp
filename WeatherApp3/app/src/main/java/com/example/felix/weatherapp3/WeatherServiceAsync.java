@@ -1,6 +1,7 @@
 package com.example.felix.weatherapp3;
 
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -74,36 +75,46 @@ public class WeatherServiceAsync extends AsyncTask<String, Void, String>
     {
         try
         {
-            JSONObject jsonResult = new JSONObject(result);
+            if(!(result.contains("404")))
+            {
+                JSONObject jsonResult = new JSONObject(result);
 
-            //JSON-Objekt analysieren und gewünschte Werte auslesen
-            //STRUKTUR des JSON Dokumetnes beachten!!!
-
-
-            //Ort auslesen
-            String city = jsonResult.getJSONArray("list").getJSONObject(0).getString("name");
-
-            //Beschreibung auslesen
-            String description = jsonResult.getJSONArray("list").getJSONObject(0).getJSONArray("weather").getJSONObject(0).getString("description");
-
-            //Temperatur auslesen und von Kelvin in Celsius umrechnen
-            double temperature = jsonResult.getJSONArray("list").getJSONObject(0).getJSONObject("main").getDouble("temp");
-            temperature = convertTemperatureToCelsius(temperature);
-
-            //Luftfeuchtigkeit auslesen
-            double humidity = jsonResult.getJSONArray("list").getJSONObject(0).getJSONObject("main").getDouble("humidity");
-
-            //Luftdruck auslesen
-            double pressure = jsonResult.getJSONArray("list").getJSONObject(0).getJSONObject("main").getDouble("pressure");
+                //JSON-Objekt analysieren und gewünschte Werte auslesen
+                //STRUKTUR des JSON Dokumetnes beachten!!!
 
 
+                //Ort auslesen
+                String city = jsonResult.getJSONArray("list").getJSONObject(0).getString("name");
 
-            //TextViews mit ausgelesenen Daten füllen
-            this.MainActivity.setCity(city);
-            this.MainActivity.setDescription(description);
-            this.MainActivity.setTemperature(temperature);
-            this.MainActivity.setHumidity(humidity);
-            this.MainActivity.setPressure(pressure);
+                String country = jsonResult.getJSONArray("list").getJSONObject(0).getJSONObject("sys").getString("country");
+
+                //Beschreibung auslesen
+                String description = jsonResult.getJSONArray("list").getJSONObject(0).getJSONArray("weather").getJSONObject(0).getString("description");
+
+                //Temperatur auslesen und von Kelvin in Celsius umrechnen
+                double temperature = jsonResult.getJSONArray("list").getJSONObject(0).getJSONObject("main").getDouble("temp");
+                temperature = convertTemperatureToCelsius(temperature);
+
+                //Luftfeuchtigkeit auslesen
+                double humidity = jsonResult.getJSONArray("list").getJSONObject(0).getJSONObject("main").getDouble("humidity");
+
+                //Luftdruck auslesen
+                double pressure = jsonResult.getJSONArray("list").getJSONObject(0).getJSONObject("main").getDouble("pressure");
+
+
+
+                //TextViews mit ausgelesenen Daten füllen
+                this.MainActivity.setCity(city);
+                this.MainActivity.setCountry(country);
+                this.MainActivity.setDescription(description);
+                this.MainActivity.setTemperature(temperature);
+                this.MainActivity.setHumidity(humidity);
+                this.MainActivity.setPressure(pressure);
+            }
+            else
+            {
+                Toast.makeText(this.MainActivity.getApplicationContext(), "Kein Treffer!", Toast.LENGTH_SHORT).show();
+            }
         }
         catch(Exception e)
         {

@@ -29,6 +29,7 @@ public class CityServiceAsync extends AsyncTask<String, Void, List<City>>
     {
         Gson gson = new Gson();
         List<City> cityList = new ArrayList<City>();
+        int count;
 
         for(String url: urls)
         {
@@ -44,20 +45,29 @@ public class CityServiceAsync extends AsyncTask<String, Void, List<City>>
                 BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
                 JsonObject json = gson.fromJson(buffer, JsonObject.class);
                 JsonArray list = json.getAsJsonArray("list");
-                int count = json.get("count").getAsInt();
-                System.out.println(count);
 
-                for(int i = 0; i < list.size(); i++)
+                long cod = json.get("cod").getAsInt();
+
+                if(cod != 404)
                 {
-                    JsonObject cityObject = list.get(i).getAsJsonObject();
-                    String cityName = cityObject.get("name").getAsString();
-                    System.out.println(cityName);
-                    JsonObject countryObject = list.get(i).getAsJsonObject().getAsJsonObject("sys");
-                    String countryName = countryObject.get("country").getAsString();
-                    System.out.println(countryName);
+                    if(json.has("count"))
+                    {
+                        count = json.get("count").getAsInt();
+                        System.out.println(count);
+                    }
 
-                    City city = new City(cityName, countryName);
-                    cityList.add(city);
+                    for(int i = 0; i < list.size(); i++)
+                    {
+                        JsonObject cityObject = list.get(i).getAsJsonObject();
+                        String cityName = cityObject.get("name").getAsString();
+                        System.out.println(cityName);
+                        JsonObject countryObject = list.get(i).getAsJsonObject().getAsJsonObject("sys");
+                        String countryName = countryObject.get("country").getAsString();
+                        System.out.println(countryName);
+
+                        City city = new City(cityName, countryName);
+                        cityList.add(city);
+                    }
                 }
             }
             catch(Exception e)
